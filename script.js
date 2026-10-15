@@ -20,3 +20,16 @@ document.querySelector('#enquiry-form')?.addEventListener('submit', event => {
   const body = `Hello Ceiling 820,%0A%0AMy name is ${encodeURIComponent(name)}.%0AEnquiry: ${encodeURIComponent(need)}.%0ADetails: ${encodeURIComponent(message)}`;
   window.open(`https://wa.me/9812551552?text=${body}`, '_blank', 'noopener');
 });
+
+/* Premium interaction layer */
+document.documentElement.classList.add('reveal-ready');
+const revealTargets = document.querySelectorAll('section, .service-card, .gallery-card, .section-heading, .intro-content, .contact-form');
+revealTargets.forEach(el => el.classList.add('reveal'));
+if ('IntersectionObserver' in window) {
+ const revealObserver = new IntersectionObserver((entries, observer) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('is-visible'); observer.unobserve(entry.target); } }); }, { threshold:0.12, rootMargin:'0px 0px -35px 0px' });
+ revealTargets.forEach(el => revealObserver.observe(el));
+} else { revealTargets.forEach(el => el.classList.add('is-visible')); }
+const header = document.querySelector('.site-header');
+const updateHeader = () => header?.classList.toggle('scrolled', window.scrollY > 12);
+window.addEventListener('scroll', updateHeader, { passive:true }); updateHeader();
+document.querySelectorAll('img').forEach(img => { img.addEventListener('error', () => { img.classList.add('image-unavailable'); img.style.minHeight = img.style.minHeight || '180px'; img.style.objectFit = 'cover'; img.title = 'Demo visual fallback — replace with approved project photography.'; if (!img.dataset.fallbackApplied) { img.dataset.fallbackApplied = 'true'; img.src = 'assets/image-fallback.svg'; } }, { once:true }); });
